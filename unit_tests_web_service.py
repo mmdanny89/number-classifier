@@ -19,7 +19,7 @@ class TestRestApi(unittest.TestCase):
         cherrypy.tree.mount(server_api.RestApi())
         with server_api.test_run_server():
             url = "http://127.0.0.1:8181/posted/"
-            params ={'uuid':'5f423123-10a5-4bb5-ad79-bf0ae476e410'}
+            params ={'list_numbers':'[Fizz Buzz FizzBuzz None None FizzBuzz]'}
             r = requests.get(url, params=params)
             self.assertEqual(r.status_code, 200)
 

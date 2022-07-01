@@ -1,5 +1,4 @@
 import cherrypy as http
-import uuid 
 import cherrypy
 from contextlib import contextmanager
 
@@ -13,24 +12,25 @@ class RestApi:
             <html>
                 <body>
                     <form method='get' action='/posted'>
-                        <input value="%s" name="uuid" size='50'/>
-                        <input type='submit' value='Submit' />
+                        <label for="list-number">Enter a List of Numbers: Example: 3,4,5,6</label>
+                        <input value="%s" name="list-number"/>
+                        <input type='submit' value='Classify'/>
                     </form>
                 </body>
             </html>
-        """ % uuid.uuid4()
+        """ % "3,4,5,6"
 
 
     @http.expose
-    def posted(self, uuid):
-
+    def posted(self, list_numbers):
+        #classify here and return value
         return """
             <html>
                 <body>
                     <p>%s</p>
                 </body>
             </html>
-        """ % uuid
+        """ % list_numbers
         
 
 @contextmanager
