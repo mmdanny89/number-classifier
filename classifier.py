@@ -4,6 +4,8 @@ from sklearn import svm
 from sklearn.svm import SVC, LinearSVC
 from sklearn import datasets
 
+import os
+
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report, confusion_matrix
@@ -18,6 +20,7 @@ from sklearn.preprocessing import OrdinalEncoder, QuantileTransformer
 from sklearn import random_projection
 
 import pandas as pd
+
 import server_api
 
 
@@ -30,7 +33,8 @@ def prepare_data_to_classify(numbers):
 
 
 def classify_linear_svc(numbers=None):
-    df = pd.read_csv("./data_train/data.csv")
+    cwd = os.getcwd()
+    df = pd.read_csv(f"{cwd}/data_train/data.csv")
     X = df.drop('Type', axis=1)
     y = df['Type']
     for i in range(len(df)):

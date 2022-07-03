@@ -13,12 +13,8 @@ import pandas as pd
 import importlib.machinery
 import importlib.util
 from pathlib import Path
-script_dir = Path( __file__ ).parent.parent
-classifier_path = str( script_dir.joinpath('classifier.py' ) )
-loader = importlib.machinery.SourceFileLoader( 'classifier', classifier_path    )
-spec = importlib.util.spec_from_loader( 'classifier', loader )
-classifier = importlib.util.module_from_spec( spec )
-loader.exec_module( classifier )
+
+import classifier
 
 
 class ClassifyTest(unittest.TestCase):

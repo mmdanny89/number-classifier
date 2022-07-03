@@ -7,21 +7,11 @@ Version :   1.0
 E-mail  :   mmdanny89@gmail.com
 """
 
-
-import importlib.machinery
-import importlib.util
-from pathlib import Path
-
 import unittest
 import cherrypy
 import requests
  
-script_dir = Path( __file__ ).parent.parent
-server_api_path = str( script_dir.joinpath('server_api.py' ) )
-loader = importlib.machinery.SourceFileLoader( 'server_api', server_api_path    )
-spec = importlib.util.spec_from_loader( 'server_api', loader )
-server_api = importlib.util.module_from_spec( spec )
-loader.exec_module( server_api )
+import server_api
 
 
 
