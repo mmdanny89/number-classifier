@@ -21,6 +21,11 @@ class ClassifyTest(unittest.TestCase):
         result_prepare = classifier.prepare_data_to_classify([30,40,90])
         self.assertEqual(True, data.equals(result_prepare))
 
+    def test_classify(self):
+        data = pd.DataFrame({'Type':['FizzBuzz','Buzz','None','FizzBuzz'] })
+        predict = classifier.classify_([90,100,1,45])
+        res = pd.DataFrame({'Type': predict[0]})
+        self.assertEqual(True, data.equals(res))
 
 if __name__ == '__main__':
     unittest.main()
