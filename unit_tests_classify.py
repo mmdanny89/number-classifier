@@ -10,10 +10,6 @@ E-mail  :   mmdanny89@gmail.com
 import unittest
 import pandas as pd
 
-import importlib.machinery
-import importlib.util
-from pathlib import Path
-
 import classifier
 
 
