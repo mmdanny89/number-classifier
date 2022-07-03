@@ -1,4 +1,4 @@
-# svm-classifier
+# number-classifier
 ###  Multiclass classifier
 A simple Classification Engine:
 A simple program that given the numbers from 1 to 100 print “None” for each number. But for multiples of
