@@ -10,13 +10,7 @@ class RestApi:
 
     @http.expose
     def index(self):
-       return """
-            <html>
-                <body>
-                    <p>{0}</p>
-                </body>
-            </html>
-        """.format(self.msg_post) 
+        return "<html><body><p>{0}</p></body></html>".format(self.msg_post)
 
 
 @contextmanager

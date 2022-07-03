@@ -33,8 +33,7 @@ def prepare_data_to_classify(numbers):
 
 
 def classify_linear_svc(numbers=None):
-    cwd = os.getcwd()
-    df = pd.read_csv(f"{cwd}/data_train/data.csv")
+    df = pd.read_csv("./data_train/data.csv")
     X = df.drop('Type', axis=1)
     y = df['Type']
     for i in range(len(df)):
