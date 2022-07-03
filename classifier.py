@@ -18,7 +18,8 @@ from sklearn.preprocessing import OrdinalEncoder, QuantileTransformer
 from sklearn import random_projection
 
 import pandas as pd
-import server_api
+#import server_api
+
 
 def prepare_data_to_classify(numbers):
     result = {'Number':[]}
@@ -47,34 +48,8 @@ def classify_linear_svc(numbers=None):
     return result, acc
 
 
-def separate_numbers():
-    none_m = []
-    fizz = []
-    buzz = []
-    fizz_buzz = []
-    for i in range(1,101):
-        if i % 3 == 0:
-            fizz.append(i)
-        if i % 5 == 0:
-            buzz.append(i)
-        if i % 3 == 0 and i % 5 == 0:
-            fizz_buzz.append(i)
-        elif not i % 3 == 0 and not i % 5 == 0:
-            none_m.append(i)
-
-    print('----none----')
-    print(none_m)
-    print('----fizz----')
-    print(fizz)
-    print('----buzz----')
-    print(buzz)
-    print('----fizz_buzz----')
-    print(fizz_buzz)
-
-
-
 if __name__ == '__main__':
-    #separate_numbers()
     result, acc = classify_linear_svc([90,100,1,45])
     print(acc)
     server_api.run_server(str(result))
+    
