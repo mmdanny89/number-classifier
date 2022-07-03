@@ -1,2 +1,3 @@
 # svm-classifier
-A  SVM multiclass classifier
+SVM multiclass classifier
+### A simple Classification Engine:

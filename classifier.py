@@ -1,13 +1,15 @@
 
+from pg8000 import Binary
 from sklearn import svm
-from sklearn.svm import SVC
+from sklearn.svm import SVC, LinearSVC
 from sklearn import datasets
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn import metrics
-
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import make_column_transformer
 import numpy as np
 from sklearn.preprocessing import StandardScaler, Binarizer, MinMaxScaler, normalize
 from sklearn import preprocessing
@@ -16,89 +18,33 @@ from sklearn.preprocessing import OrdinalEncoder, QuantileTransformer
 from sklearn import random_projection
 
 import pandas as pd
+import server_api
+
+def prepare_data_to_classify(numbers):
+    result = {'Number':[]}
+    for x in range(len(numbers)):
+        result['Number'].append(int(np.base_repr(numbers[x],base=3)))
+    df = pd.DataFrame(result)
+    return df
 
 
-def classify():
-    #none_m = [1, 2, 4, 7, 8, 11, 13, 14, 16, 17, 19, 22, 23, 26, 28, 29, 31, 32, 34, 37, 38, 41, 43, 44, 46, 47, 49, 52, 53, 56, 58, 59, 61, 62, 64, 67, 68, 71, 73, 74, 76, 77, 79, 82, 83, 86, 88, 89, 91, 92, 94, 97, 98]
-    #fizz = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 51, 54, 57, 60, 63, 66, 69, 72, 75, 78, 81, 84, 87, 90, 93, 96, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    #buzz = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
-    #fizz_buzz = [15, 30, 45, 60, 75, 90]
-    
-    df = pd.read_csv("./data/model.csv")
-    
-    #encoder = OrdinalEncoder(categories=['None', 'Fizz', 'Buzz', 'FizzBuzz'])
-    #cat = pd.Categorical(df.Type, categories=['None', 'Fizz', 'Buzz', 'FizzBuzz'], ordered=True)
-    #labels, unique = pd.factorize(cat, sort=True)
-    #df.Type = labels
-    #scaler = StandardScaler()
-    #t = scaler.fit_transform(df.Number.values.reshape(-1, 1))
-    #df.Number = t
-    #print(df.values)
-    #df_norm = normalize(df.values, "l2", axis=1)
-    data = df.values
-    X, y = data[:, :-1], data[:, -1]
-    #X = df.drop('Type', axis=1)
-    #y = df['Type']
-    le = preprocessing.LabelEncoder()
-    y = le.fit_transform(y)
-
-    
-    #q =  QuantileTransformer(random_state=0,  output_distribution='uniform', n_quantiles=100)
-    #X = q.fit_transform(X.reshape(-1, 1), y=y)
-    scaler = StandardScaler()
-    X = scaler.fit_transform(X, y)
-    #print(X)
-    
-    #print([XX])
-    #print(df['Type'].value_counts())
-    #print(df.info())
-    #print(round(df.describe(),2))
-    
-    #print(X)
-
-    #X_digits, y_digits = datasets.load_digits(return_X_y=True)
-
-    #X = scaler.transform(X)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
-    #X_scaled = scaler.transform(X_train)
-    #print(X_train.append([2]))
-    #print(X_test.shape)
-    
-
-    #print(X_train.describe())
-
-    
-
-    
-    svclassifier = SVC(C=100)
-    svclassifier.fit(X_train, y_train)
-    predict = svclassifier.predict(X_test)
-    print(predict)
-    
-    #print('Model accuracy score with rbf kernel and C=100.0 : {0:0.4f}'. format(accuracy_score(y_test, y_pred)))
-
-    
-    #y_pred = svclassifier.predict([[69],[70], [71]])
-    #print(y_pred)
-    #print(y_pred)
-    #accuracy = accuracy_score(y_test,y_pred)*100
-    #print(accuracy)
-    #print(confusion_matrix(y_test, y_pred))
-    #print(classification_report(y_test, y_pred,zero_division=1))
-
-    #X_train, X_test, y_train, y_test = train_test_split(X, y)
-
-       
-
-    #SupportVectorClassModel = svm.SVC(kernel='linear')
-    #SupportVectorClassModel.fit(X_train, y_train)
-
-    #y_pred = SupportVectorClassModel.predict([[7],[100]])
-
-
-    #accuracy = accuracy_score(y_test,y_pred)*100
-    #print("y_pred: ", y_pred)
-    #print("accuracy: ", accuracy)
+def classify_linear_svc(numbers=None):
+    df = pd.read_csv("./data_train/data.csv")
+    X = df.drop('Type', axis=1)
+    y = df['Type']
+    for i in range(len(df)):
+        X.at[i,'Number']= int(np.base_repr(int(X.at[i,'Number']), base=3))
+    X_train, X_test, y_train, y_test = train_test_split(X, y)
+    linear_svc = LinearSVC()
+    linear_svc.fit(X_train, y_train)
+    result = None 
+    if numbers:
+        result = linear_svc.predict(prepare_data_to_classify(numbers))
+        acc = None
+    else:
+        result = linear_svc.predict(X_test)
+        acc = (accuracy_score(y_test, result)*100)
+    return result, acc
 
 
 def separate_numbers():
@@ -119,8 +65,6 @@ def separate_numbers():
     print('----none----')
     print(none_m)
     print('----fizz----')
-    for i in range(len(none_m)-len(fizz)):
-        pass
     print(fizz)
     print('----buzz----')
     print(buzz)
@@ -130,4 +74,7 @@ def separate_numbers():
 
 
 if __name__ == '__main__':
-    classify()
+    #separate_numbers()
+    result, acc = classify_linear_svc([90,100,1,45])
+    print(acc)
+    server_api.run_server(str(result))

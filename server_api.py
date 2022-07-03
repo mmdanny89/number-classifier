@@ -5,33 +5,19 @@ from contextlib import contextmanager
 
 class RestApi:
 
+    def __init__(self, msg_post="[TypeFizz, TypeBUzz, TypeNone, TypeFizzBuzz]") -> None:
+        self.msg_post = msg_post
 
     @http.expose
     def index(self):
-        return """
+       return """
             <html>
                 <body>
-                    <form method='get' action='/posted'>
-                        <label for="list-number">Enter a List of Numbers: Example: 3,4,5,6</label>
-                        <input value="%s" name="list-number"/>
-                        <input type='submit' value='Classify'/>
-                    </form>
+                    <p>{0}</p>
                 </body>
             </html>
-        """ % "3,4,5,6"
+        """.format(self.msg_post) 
 
-
-    @http.expose
-    def posted(self, list_numbers):
-        #classify here and return value
-        return """
-            <html>
-                <body>
-                    <p>%s</p>
-                </body>
-            </html>
-        """ % list_numbers
-        
 
 @contextmanager
 def test_run_server():
@@ -43,9 +29,12 @@ def test_run_server():
     cherrypy.engine.block()
 
 
-def run_server():
+def run_server(msg=None):
     http.config.update( {'server.socket_host':"0.0.0.0", 'server.socket_port':8181 } )
-    http.quickstart( RestApi() )
+    if msg:
+        http.quickstart( RestApi(msg) )
+    else:
+        http.quickstart( RestApi() )
 
 
 if __name__ == '__main__':
