@@ -18,7 +18,7 @@ from sklearn.preprocessing import OrdinalEncoder, QuantileTransformer
 from sklearn import random_projection
 
 import pandas as pd
-#import server_api
+import server_api
 
 
 def prepare_data_to_classify(numbers):
