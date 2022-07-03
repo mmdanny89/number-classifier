@@ -6,3 +6,7 @@ three print “Fizz” instead of “None” and for the multiples of ﬁve prin
 multiples of both three and ﬁve print “FizzBuzz”.
 
 The results are published in a web service http://localhost/8181
+
+### Librarys:
+- sklearn: for ML
+- cherrypy: REST service.
