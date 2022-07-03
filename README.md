@@ -1,5 +1,4 @@
 # svm-classifier
-[![Coverage Status](https://img.shields.io/codecov/c/github/mmdanny89/svm-classifier)](https://coveralls.io/github/mmdanny89/svm-classifier?branch=main)
 ### SVM multiclass classifier
 A simple Classification Engine:
 A simple program that given the numbers from 1 to 100 print “None” for each number. But for multiples of
